@@ -1,3 +1,9 @@
+/**
+ * A simple STDIN-based user interface to implement `ui::UserInterface`. To be
+ * used for development purposes, and ultimately to be replaced by a nice
+ * implementation using `ncurses` or similar.
+ */
+
 use std::io::{stdin, stdout, Write};
 
 use crate::ui;

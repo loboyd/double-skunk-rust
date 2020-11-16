@@ -26,20 +26,28 @@ fn run<T: ui::UserInterface>(t: &T) {
     }
 }
 
-fn play_game<T: opponent::Opponent>(opponent: &T) {
+fn play_game<T: opponent::Opponent>(opp: &T) {
     // TODO: Replace this with calls to the UI (how?)
-    match opponent.determine_first_dealer() {
-        0 => println!("You're opponent is the first dealer"),
-        _ => println!("You're the first dealer"),
+    match opp.determine_first_dealer() {
+        true => println!("You're the first dealer"),
+        false => println!("You're opponent is the first dealer"),
     }
 
     loop {
-        // TODO: deal cards
+        // TODO: Where should the `dealer` state exist?
+        let (_hand, _starter) = opp.deal();
+
         // TODO: discard (get crib)
+
         // TODO: pegging phase
+
         // TODO: get opponents hand+crib
+
         // TODO: count hands
+
         // TODO: check game termination
+
+        break;
     }
 }
 
