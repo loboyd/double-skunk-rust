@@ -1,8 +1,13 @@
-mod client;
+// traits
 mod ui;
 mod opponent;
+
+// structs
+mod client;
 mod stdin_ui;
 mod bogus_opponent;
+mod game;
+mod card;
 
 fn main() {
     // set up user-interface
@@ -10,10 +15,7 @@ fn main() {
         height: 10, width: 10
     };
 
-    // set up opponent
-    let opponent = bogus_opponent::BogusOpponent{};
-
-    let mut c = client::Client::new(opponent, ui);
+    let c = client::Client::new(ui);
     c.run();
 }
 

@@ -8,6 +8,7 @@ use std::io::{stdin, stdout, Write};
 
 use crate::ui;
 
+#[derive(Copy, Clone)]
 pub struct StdinInterface {
     pub width:  u8,
     pub height: u8
@@ -41,17 +42,6 @@ fn input() -> String {
     }
     s
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 fn clear_screen() {
