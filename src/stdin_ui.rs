@@ -17,24 +17,29 @@ impl ui::UserInterface for StdinInterface {
     fn main_menu(&self) -> u8 {
         println!("1. Play, 2. Quit");
 
-        let s = StdinInterface::input();
+        let s = input();
         return s.parse::<u8>().unwrap();
+    }
+
+    fn first_dealer(&self, first_dealer: bool) {
+        match first_dealer {
+            true => println!("You're the first dealer"),
+            false => println!("You're opponent is the first dealer"),
+        }
     }
 }
 
-impl StdinInterface {
-    fn input() -> String {
-        let mut s = String::new();
-        let _ = stdout().flush();
-        stdin().read_line(&mut s).expect("Did not enter a correct string");
-        if let Some('\n')=s.chars().next_back() {
-            s.pop();
-        }
-        if let Some('\r')=s.chars().next_back() {
-            s.pop();
-        }
-        s
+fn input() -> String {
+    let mut s = String::new();
+    let _ = stdout().flush();
+    stdin().read_line(&mut s).expect("Did not enter a correct string");
+    if let Some('\n')=s.chars().next_back() {
+        s.pop();
     }
+    if let Some('\r')=s.chars().next_back() {
+        s.pop();
+    }
+    s
 }
 
 
