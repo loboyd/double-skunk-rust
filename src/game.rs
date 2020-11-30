@@ -1,3 +1,4 @@
+use crate::card;
 use crate::ui;
 use crate::opponent;
 
@@ -34,7 +35,7 @@ impl<T: opponent::Opponent, U: ui::UserInterface> Game<T, U> {
 
             let (hand, crib) = self.opponent.discard(dealer, hand, ind1, ind2);
             match crib {
-                Some(crib) => println!("got the crib"),
+                Some(crib) => print_crib(crib),
                 None       => println!("gotn't the crib"),
             }
 
@@ -49,6 +50,12 @@ impl<T: opponent::Opponent, U: ui::UserInterface> Game<T, U> {
 
             break;
         }
+    }
+}
+
+fn print_crib(crib: Vec<card::Card>) {
+    for card in crib {
+        println!("{} {}", card.rank, card.suit);
     }
 }
 
