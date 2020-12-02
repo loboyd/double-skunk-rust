@@ -23,3 +23,8 @@ Default size: 80x24 cells
 ║                                                                              ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
+Notes:
+- [ ] Add informative views such as
+  - [ ] first dealer
+  - [ ] crib (maybe just handle this on the discard screen)
+
