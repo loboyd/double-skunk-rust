@@ -8,21 +8,23 @@ use std::io::{stdin, stdout, Write};
 
 use crate::ui;
 
-#[derive(Copy, Clone)]
 pub struct StdinInterface {
     pub width:  u8,
     pub height: u8
 }
 
 impl ui::UserInterface for StdinInterface {
-    fn main_menu(&self) -> u8 {
+    //fn main_menu(self) -> (ui::MainMenu, Self) {
+    fn main_menu(&mut self) -> ui::MainMenu {
         println!("1. Play, 2. Quit");
 
-        let s = input();
-        return s.parse::<u8>().unwrap();
+        let _ = input();
+        //return (s.parse::<u8>().unwrap(), self);
+        ui::MainMenu::Play
+        //return (ui::MainMenu::Play, self);
     }
 
-    fn first_dealer(&self, first_dealer: bool) {
+    fn display_first_dealer(&self, first_dealer: bool) {
         match first_dealer {
             true => println!("You're the first dealer"),
             false => println!("You're opponent is the first dealer"),

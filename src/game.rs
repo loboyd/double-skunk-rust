@@ -2,14 +2,14 @@ use crate::card;
 use crate::ui;
 use crate::opponent;
 
-pub struct Game<T: opponent::Opponent, U: ui::UserInterface> {
+pub struct Game<'a, T: opponent::Opponent, U: ui::UserInterface> {
     opponent:       T,
-    user_interface: U,
+    user_interface: &'a mut U,
     first_dealer:   bool,
 }
 
-impl<T: opponent::Opponent, U: ui::UserInterface> Game<T, U> {
-    pub fn new(opponent: T, user_interface: U) -> Game<T, U> {
+impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
+    pub fn new(opponent: T, user_interface: &'a mut U) -> Game<'a, T, U> {
         Game {
             opponent: opponent,
             user_interface: user_interface,
@@ -19,9 +19,9 @@ impl<T: opponent::Opponent, U: ui::UserInterface> Game<T, U> {
 
     pub fn play(&mut self) {
         
-        println!("You are playing the game...");
+        //println!("You are playing the game...");
         self.first_dealer = self.opponent.determine_first_dealer();
-        self.user_interface.first_dealer(self.first_dealer);
+        self.user_interface.display_first_dealer(self.first_dealer);
 
         let dealer = if self.first_dealer {true} else {false};
 
