@@ -59,7 +59,7 @@ impl ui::UserInterface for UI {
         return ui::MainMenu::Exit;
     }
 
-    fn display_first_dealer(&self, first_dealer: bool) {
+    fn display_first_dealer(&mut self, first_dealer: bool) {
     }
 
     /*

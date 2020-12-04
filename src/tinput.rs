@@ -12,11 +12,11 @@ use termion::event::{self, Event, Key};
 use termion::raw::IntoRawMode;
 
 /// An iterator over input keys.
-pub struct Keys<R> {
-    iter: Events<R>,
+pub struct Keys<'a, R> {
+    iter: Events<'a, R>,
 }
 
-impl<R: Read> Iterator for Keys<R> {
+impl<'a, R: Read> Iterator for Keys<'a, R> {
     type Item = Result<Key, io::Error>;
 
     fn next(&mut self) -> Option<Result<Key, io::Error>> {
@@ -32,11 +32,11 @@ impl<R: Read> Iterator for Keys<R> {
 }
 
 /// An iterator over input events.
-pub struct Events<R>  {
-    inner: EventsAndRaw<R>
+pub struct Events<'a, R>  {
+    inner: EventsAndRaw<'a, R>
 }
 
-impl<R: Read> Iterator for Events<R> {
+impl<'a, R: Read> Iterator for Events<'a, R> {
     type Item = Result<Event, io::Error>;
 
     fn next(&mut self) -> Option<Result<Event, io::Error>> {
@@ -45,16 +45,16 @@ impl<R: Read> Iterator for Events<R> {
 }
 
 /// An iterator over input events and the bytes that define them.
-pub struct EventsAndRaw<R> {
-    source: R,
+pub struct EventsAndRaw<'a, R> {
+    source: &'a mut R,
     leftover: Option<u8>,
 }
 
-impl<R: Read> Iterator for EventsAndRaw<R> {
+impl<'a, R: Read> Iterator for EventsAndRaw<'a, R> {
     type Item = Result<(Event, Vec<u8>), io::Error>;
 
     fn next(&mut self) -> Option<Result<(Event, Vec<u8>), io::Error>> {
-        let source = &mut self.source;
+        let source = &self.source;
 
         if let Some(c) = self.leftover {
             // we have a leftover byte, use it
@@ -110,10 +110,10 @@ fn parse_event<I>(item: u8, iter: &mut I) -> Result<(Event, Vec<u8>), io::Error>
 /// Extension to `Read` trait.
 pub trait TermRead {
     /// An iterator over input events.
-    fn events(self) -> Events<Self> where Self: Sized;
+    fn events(&mut self) -> Events<Self> where Self: Sized;
 
     /// An iterator over key inputs.
-    fn keys(self) -> Keys<Self> where Self: Sized;
+    fn keys(&mut self) -> Keys<Self> where Self: Sized;
 
     /// Read a line.
     ///
@@ -133,12 +133,12 @@ pub trait TermRead {
 
 
 impl<R: Read + TermReadEventsAndRaw> TermRead for R {
-    fn events(self) -> Events<Self> {
+    fn events(&mut self) -> Events<Self> {
         Events {
             inner: self.events_and_raw()
         }
     }
-    fn keys(self) -> Keys<Self> {
+    fn keys(&mut self) -> Keys<Self> {
         Keys { iter: self.events() }
     }
 
@@ -166,11 +166,11 @@ impl<R: Read + TermReadEventsAndRaw> TermRead for R {
 /// Extension to `TermRead` trait. A separate trait in order to maintain backwards compatibility.
 pub trait TermReadEventsAndRaw {
     /// An iterator over input events and the bytes that define them.
-    fn events_and_raw(self) -> EventsAndRaw<Self> where Self: Sized;
+    fn events_and_raw(&mut self) -> EventsAndRaw<Self> where Self: Sized;
 }
 
 impl<R: Read> TermReadEventsAndRaw for R {
-    fn events_and_raw(self) -> EventsAndRaw<Self> {
+    fn events_and_raw(&mut self) -> EventsAndRaw<Self> {
         EventsAndRaw {
             source: self,
             leftover: None,
