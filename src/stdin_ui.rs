@@ -18,9 +18,11 @@ impl ui::UserInterface for StdinInterface {
     fn main_menu(&mut self) -> ui::MainMenu {
         println!("1. Play, 2. Quit");
 
-        let _ = input();
-        //return (s.parse::<u8>().unwrap(), self);
-        ui::MainMenu::Play
+        let s = input();
+        match s.parse::<u8>().unwrap() {
+            1 => ui::MainMenu::Play,
+            _ => ui::MainMenu::Exit,
+        }
         //return (ui::MainMenu::Play, self);
     }
 

@@ -22,17 +22,16 @@ impl<U: ui::UserInterface> Client<U> {
     /**
      * Implement the main client loop
      */
-    pub fn run(&mut self){
+    pub fn run(&mut self) {
         loop {
             // TODO: Learn how to handle errors here, e.g., resulting from a
             // user passing in an empty string
 
             let menu_result = self.user_interface.main_menu();
 
-            if let ui::MainMenu::Play = menu_result {
-                self.play_game();
-            } else if let ui::MainMenu::Exit = menu_result {
-                std::process::exit(0);
+            match menu_result {
+                ui::MainMenu::Play => self.play_game(),
+                ui::MainMenu::Exit => break,
             }
         }
     }
@@ -41,6 +40,8 @@ impl<U: ui::UserInterface> Client<U> {
      * Implement the main game loop
      */
     fn play_game(&mut self) {
+        println!("Somebody wants to play");
+        /* TODO: Uncomment this
         // create a new opponent struct
         let opponent = bogus_opponent::BogusOpponent{};
 
@@ -51,5 +52,6 @@ impl<U: ui::UserInterface> Client<U> {
         );
 
         game.play();
+        */
     }
 }
