@@ -7,11 +7,13 @@ use crate::ui;
 use crate::game;
 use crate::bogus_opponent;
 
+// TODO: Possibly remove Trait spec here, instead leaving it only on the impl
+#[derive(Clone)]
 pub struct Client<U: ui::UserInterface> {
     user_interface: U,
 }
 
-impl<U: ui::UserInterface> Client<U> {
+impl<U: ui::UserInterface + Clone> Client<U> {
 
     pub fn new(user_interface: U) -> Client<U> {
         Client{
@@ -22,12 +24,12 @@ impl<U: ui::UserInterface> Client<U> {
     /**
      * Implement the main client loop
      */
-    pub fn run(&mut self) {
+    pub fn run(&self) {
         loop {
             // TODO: Learn how to handle errors here, e.g., resulting from a
             // user passing in an empty string
 
-            let menu_result = self.user_interface.main_menu();
+            let menu_result = self.user_interface.clone().main_menu();
 
             match menu_result {
                 ui::MainMenu::Play => self.play_game(),
@@ -39,7 +41,7 @@ impl<U: ui::UserInterface> Client<U> {
     /**
      * Implement the main game loop
      */
-    fn play_game(&mut self) {
+    fn play_game(&self) {
         println!("Somebody wants to play");
         /* TODO: Uncomment this
         // create a new opponent struct
