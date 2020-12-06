@@ -8,8 +8,7 @@ use crate::game;
 use crate::bogus_opponent;
 
 // TODO: Possibly remove Trait spec here, instead leaving it only on the impl
-#[derive(Clone)]
-pub struct Client<U: ui::UserInterface> {
+pub struct Client<U> {
     user_interface: U,
 }
 
@@ -42,18 +41,17 @@ impl<U: ui::UserInterface + Clone> Client<U> {
      * Implement the main game loop
      */
     fn play_game(&self) {
-        println!("Somebody wants to play");
-        /* TODO: Uncomment this
+        // TODO: Eventually ask what type of opponent to use
         // create a new opponent struct
         let opponent = bogus_opponent::BogusOpponent{};
 
         // create new Game struct
-        let mut game = game::Game::new(
+        let game = game::Game::new(
             opponent,
-            &mut self.user_interface,
+            &self.user_interface,
         );
 
         game.play();
-        */
     }
 }
+

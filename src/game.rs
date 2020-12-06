@@ -1,15 +1,15 @@
-use crate::card;
+//use crate::card;
 use crate::ui;
 use crate::opponent;
 
-pub struct Game<'a, T: opponent::Opponent, U: ui::UserInterface> {
+pub struct Game<'a, T, U> {
     opponent:       T,
-    user_interface: &'a mut U,
+    user_interface: &'a U,
     first_dealer:   bool,
 }
 
 impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
-    pub fn new(opponent: T, user_interface: &'a mut U) -> Game<'a, T, U> {
+    pub fn new(opponent: T, user_interface: &'a U) -> Game<'a, T, U> {
         Game {
             opponent: opponent,
             user_interface: user_interface,
@@ -17,7 +17,7 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
         }
     }
 
-    pub fn play(&mut self) {
+    pub fn play(mut self) {
         
         //println!("You are playing the game...");
         self.first_dealer = self.opponent.determine_first_dealer();
@@ -29,15 +29,20 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
             // TODO: Where should the `dealer` state exist?
             let (hand, starter) = self.opponent.deal(dealer);
 
+            /*
             // discard (get crib)
-            //let (ind1, ind2) = self.user_interface.discard(hand, starter);
-            let (ind1, ind2) = (0, 1); // TODO: Remove this
+            let (ind1, ind2) = self.user_interface.discard(
+                dealer,
+                hand,
+                starter
+            );
 
             let (hand, crib) = self.opponent.discard(dealer, hand, ind1, ind2);
             match crib {
                 Some(crib) => print_crib(crib),
                 None       => println!("gotn't the crib"),
             }
+            */
 
             // TODO: pegging phase
             //peg(hand, starter);
@@ -50,12 +55,6 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
 
             break;
         }
-    }
-}
-
-fn print_crib(crib: Vec<card::Card>) {
-    for card in crib {
-        println!("{} {}", card.rank, card.suit);
     }
 }
 

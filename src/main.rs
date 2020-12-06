@@ -15,7 +15,7 @@ fn main() {
     let ui = termion_ui::UI{};
     //let ui = stdin_ui::StdinInterface { height: 10, width: 10 };
 
-    let mut c = client::Client::new(ui);
+    let c = client::Client::new(ui);
     c.run();
 }
 
