@@ -29,7 +29,8 @@ pub enum Suit {
 #[derive(Eq, PartialEq, Ord, PartialOrd)]
 pub enum Card {
     Value(Rank, Suit),
-    Empty
+    Facedown,
+    Empty,
 }
 
 impl fmt::Display for Rank {
@@ -65,23 +66,51 @@ impl fmt::Display for Suit {
 
 impl fmt::Display for Card {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let jump = "\x1B[1B\x1B[7D";  // CSI control characters
-        let top_denom = match self {
-            Card::Value(ref rank, ref suit) => format!("{}   {}", rank, suit),
-            Card::Empty            => format!("     "),
+        let jump = "\x1B[1B\x1B[8D";  // CSI control characters
+
+        // top line
+        let top = match self {
+            Card::Value(rank, suit) => format!("{}    {}", rank, suit),
+            Card::Facedown          => "ᵈᵒᵘᵇˡᵉ".to_string(),
+            Card::Empty             => "      ".to_string(),
         };
-        let bot_denom: String = top_denom.chars().rev().collect();
-        write!(f,
-            "┌─────┐{x}\
-             │{   }│{x}\
-             │     │{x}\
-             │     │{x}\
-             │{   }│{x}\
-             └─────┘",
-             top_denom,
-             bot_denom,
-             x=jump
-        )
+
+        // bottom line
+        let bottom = match self {
+            Card::Value(rank, suit) => format!("{}    {}", suit, rank),
+            Card::Facedown          => "ˢᵏᵘⁿᵏ ".to_string(),
+            Card::Empty             => "      ".to_string(),
+        };
+
+        // center line
+        let center = match self {
+            Card::Facedown => " ____ ".to_string(),
+            _              => "      ".to_string(),
+        };
+
+        match self {
+            Card::Empty => write!(f,
+                "        {x}\
+                         {x}\
+                         {x}\
+                         {x}\
+                         {x}\
+                         ",
+                 x=jump
+            ),
+            _ => write!(f,
+                "┌──────┐{x}\
+                 │{    }│{x}\
+                 │{    }│{x}\
+                 │      │{x}\
+                 │{    }│{x}\
+                 └──────┘",
+                 top,
+                 center,
+                 bottom,
+                 x=jump
+            )
+        }
     }
 }
 
