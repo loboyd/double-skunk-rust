@@ -5,7 +5,7 @@
 
 //use crate::ui;
 use crate::opponent;
-use crate::card;
+use crate::card::{Card, Rank, Suit};
 
 pub struct BogusOpponent { }
 
@@ -16,19 +16,24 @@ impl opponent::Opponent for BogusOpponent {
         false
     }
 
-    fn deal(&self, dealer: bool) -> (Vec<card::Card>, card::Card) {
+    fn deal(&self, dealer: bool) -> (Vec<Card>, Card) {
         (vec![
-            card::Card::new(0),
-            card::Card::new(1),
-            card::Card::new(2),
-            card::Card::new(3),
-            card::Card::new(4),
-            card::Card::new(5)],
-        card::Card::new(6))
+            Card::Value(Rank::Ace, Suit::Spades),
+            Card::Value(Rank::Two, Suit::Spades),
+            Card::Value(Rank::Three, Suit::Spades),
+            Card::Value(Rank::Four, Suit::Spades),
+            Card::Value(Rank::Five, Suit::Spades),
+            Card::Value(Rank::Six, Suit::Spades)],
+        Card::Value(Rank::Seven, Suit::Spades))
     }
 
-    fn discard(&self, dealer: bool, hand: Vec<card::Card>, ind1: u8, ind2: u8)
-        -> (Vec<card::Card>, Option<Vec<card::Card>>) {
+    fn discard(
+        &self,
+        dealer: bool,
+        hand: &mut Vec<Card>,
+        ind1: u8,
+        ind2: u8
+    ) -> Option<Vec<Card>> {
 
         let mut new_hand = Vec::new();
         // TODO: Write this in a better way
@@ -39,13 +44,14 @@ impl opponent::Opponent for BogusOpponent {
         }
 
         if dealer {
-            (hand, Some(vec![
-                card::Card::new(0),
-                card::Card::new(1),
-                card::Card::new(2),
-                card::Card::new(3)]))
+            Some(vec![
+                Card::Value(Rank::Three, Suit::Spades),
+                Card::Value(Rank::Four, Suit::Spades),
+                Card::Value(Rank::Five, Suit::Spades),
+                Card::Value(Rank::Six, Suit::Spades)]
+            )
         } else {
-            (hand, None)
+            None
         }
     }
 }
