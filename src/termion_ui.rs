@@ -12,6 +12,7 @@ use termion::event::Key;
 use termion::input::TermRead;
 use termion::raw::{IntoRawMode};
 
+use std::fmt;
 use std::io::{Write}; // TODO: Is Write needed?
 use std::process::exit; // TODO: Remove this
 
@@ -34,13 +35,13 @@ impl ui::UserInterface for UI {
         let mut stdout = std::io::stdout().into_raw_mode().unwrap();
 
         write!(stdout, "{}{}Welcome to double-skunk!{}",
-            termion::clear::All,
-            termion::cursor::Goto(30, 6),
+            Border{},
+            termion::cursor::Goto(29, 6),
             termion::cursor::Hide).unwrap();
 
         write!(stdout, "{}<Enter> to play{}<Esc>   to exit{}",
-            termion::cursor::Goto(35, 12),
-            termion::cursor::Goto(35, 13),
+            termion::cursor::Goto(34, 12),
+            termion::cursor::Goto(34, 14),
             termion::cursor::Hide).unwrap();
         stdout.flush().unwrap();
 
@@ -55,6 +56,7 @@ impl ui::UserInterface for UI {
         ui::MainMenu::Exit
     }
 
+    // TODO: Inform the user of who has the grib
     // Note the weird mod `ncards` stuff going on in this function is to ensure
     // we don't underflow the `u8` indices
     fn discard(&self, dealer: bool, hand: &Vec<card::Card>, starter: card::Card)
@@ -64,9 +66,23 @@ impl ui::UserInterface for UI {
         let stdin  = std::io::stdin();
         let mut stdout = std::io::stdout().into_raw_mode().unwrap();
 
-        write!(stdout, "{}{}{} {} {} {} {} {}{}",
-            termion::clear::All,
-            termion::cursor::Goto(16, 14),
+        write!(stdout, "{}", Border{}).unwrap();
+
+        let crib_message = if dealer {
+             "You get the crib".to_string()
+        } else {
+             "You're opponent gets the crib".to_string()
+        };
+
+        let message_col = (78 - crib_message.chars().count() as u16) / 2;
+
+        write!(stdout, "{}{}",
+            termion::cursor::Goto(message_col, 9),
+            crib_message);
+
+        // TODO: Make 15 a variable
+        write!(stdout, "{}{} {} {} {} {} {}{}",
+            termion::cursor::Goto(15, 14),
             hand[0],
             hand[1],
             hand[2],
@@ -84,6 +100,7 @@ impl ui::UserInterface for UI {
         for c in stdin.keys() {
             let keystroke = c.unwrap();
 
+            // TODO: ensure a card has actually been raised before accepting
             // commit card selection
             if let termion::event::Key::Char('\n') = keystroke {
                 if first_selection {
@@ -100,9 +117,9 @@ impl ui::UserInterface for UI {
 
             else if raise_only {
                 write!(stdout, "{}{}{}        ",
-                    termion::cursor::Goto(16 + (9 * curr) as u16, 13),
+                    termion::cursor::Goto(15 + (9 * curr) as u16, 13),
                     hand[curr],
-                    termion::cursor::Goto(16 + (9 * curr) as u16, 19)
+                    termion::cursor::Goto(15 + (9 * curr) as u16, 19)
                 ).unwrap();
 
                 raise_only = false;
@@ -112,8 +129,8 @@ impl ui::UserInterface for UI {
             else {
                 // lower the current card
                 write!(stdout, "{}        {}{}",
-                    termion::cursor::Goto(16 + (9 * curr) as u16, 13),
-                    termion::cursor::Goto(16 + (9 * curr) as u16, 14),
+                    termion::cursor::Goto(15 + (9 * curr) as u16, 13),
+                    termion::cursor::Goto(15 + (9 * curr) as u16, 14),
                     hand[curr]
                     //card::Card::Facedown
                 ).unwrap();
@@ -139,10 +156,10 @@ impl ui::UserInterface for UI {
 
                 // raise new selection
                 write!(stdout, "{}{}{}        ",
-                    termion::cursor::Goto(16 + (9 * curr) as u16, 13),
+                    termion::cursor::Goto(15 + (9 * curr) as u16, 13),
                     //card::Card::Facedown,
                     hand[curr],
-                    termion::cursor::Goto(16 + (9 * curr) as u16, 19)
+                    termion::cursor::Goto(15 + (9 * curr) as u16, 19)
                 ).unwrap();
             }
 
@@ -150,6 +167,26 @@ impl ui::UserInterface for UI {
         }
 
         (ind1, ind2)
+    }
+}
+
+struct Border {}
+
+impl fmt::Display for Border {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let origin  = "\x1B[1;1H"; // top left cell
+        let newline = "\x1B[1E";
+
+        let top = format!("╔══double-skunk{}╗", "═".repeat(64));
+        let middle = format!("{}║{}║", newline, " ".repeat(78)).repeat(22);
+        let bottom = format!("{}╚{}╝", newline, "═".repeat(78));
+        write!(f, "{}{}{}{}{}",
+            termion::clear::All,
+            origin,
+            top,
+            middle,
+            bottom
+        )
     }
 }
 
