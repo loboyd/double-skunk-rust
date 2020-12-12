@@ -17,7 +17,7 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
         }
     }
 
-    pub fn play(mut self) {
+    pub fn play(&mut self) {
         
         //println!("You are playing the game...");
         self.first_dealer = self.opponent.determine_first_dealer();
@@ -27,17 +27,17 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
 
         loop {
             // TODO: Where should the `dealer` state exist?
-            let (hand, starter) = self.opponent.deal(dealer);
+            let (mut hand, starter) = self.opponent.deal(dealer);
 
-            /*
             // discard (get crib)
             let (ind1, ind2) = self.user_interface.discard(
                 dealer,
-                hand,
+                &hand,
                 starter
             );
 
-            let (hand, crib) = self.opponent.discard(dealer, hand, ind1, ind2);
+            let crib = self.opponent.discard(dealer, &mut hand, ind1, ind2);
+            /*
             match crib {
                 Some(crib) => print_crib(crib),
                 None       => println!("gotn't the crib"),

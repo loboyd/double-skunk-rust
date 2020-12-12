@@ -31,8 +31,8 @@ impl opponent::Opponent for BogusOpponent {
         &self,
         dealer: bool,
         hand: &mut Vec<Card>,
-        ind1: u8,
-        ind2: u8
+        ind1: usize,
+        ind2: usize
     ) -> Option<Vec<Card>> {
 
         let mut new_hand = Vec::new();

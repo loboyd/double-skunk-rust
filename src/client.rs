@@ -46,7 +46,7 @@ impl<U: ui::UserInterface + Clone> Client<U> {
         let opponent = bogus_opponent::BogusOpponent{};
 
         // create new Game struct
-        let game = game::Game::new(
+        let mut game = game::Game::new(
             opponent,
             &self.user_interface,
         );
