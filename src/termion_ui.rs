@@ -59,8 +59,7 @@ impl ui::UserInterface for UI {
     // TODO: Inform the user of who has the grib
     // Note the weird mod `ncards` stuff going on in this function is to ensure
     // we don't underflow the `u8` indices
-    fn discard(&self, dealer: bool, hand: &Vec<card::Card>, starter: card::Card)
-        -> (usize, usize)
+    fn discard(&self, dealer: bool, hand: &Vec<card::Card>, starter: card::Card) -> (usize, usize)
     {
         let ncards = hand.len();
         let stdin  = std::io::stdin();

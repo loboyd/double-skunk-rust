@@ -27,13 +27,9 @@ impl opponent::Opponent for BogusOpponent {
         Card::Value(Rank::Seven, Suit::Spades))
     }
 
-    fn discard(
-        &self,
-        dealer: bool,
-        hand: &mut Vec<Card>,
-        ind1: usize,
-        ind2: usize
-    ) -> Option<Vec<Card>> {
+    fn discard( &self, dealer: bool, hand: &mut Vec<Card>, ind1: usize, ind2: usize)
+        -> Option<Vec<Card>>
+    {
 
         let mut new_hand = Vec::new();
         // TODO: Write this in a better way

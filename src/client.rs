@@ -41,10 +41,7 @@ impl<U: ui::UserInterface + Clone> Client<U> {
 
         let opponent = bogus_opponent::BogusOpponent{};
 
-        let mut game = game::Game::new(
-            opponent,
-            &self.user_interface,
-        );
+        let mut game = game::Game::new(opponent, &self.user_interface);
 
         game.play();
     }
