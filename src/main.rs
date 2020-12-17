@@ -11,9 +11,7 @@ mod game;
 mod card;
 
 fn main() {
-    // set up user-interface
     let ui = termion_ui::UI{};
-    //let ui = stdin_ui::StdinInterface { height: 10, width: 10 };
 
     let c = client::Client::new(ui);
     c.run();

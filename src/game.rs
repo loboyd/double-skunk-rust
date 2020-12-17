@@ -19,7 +19,6 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
 
     pub fn play(&mut self) {
         
-        //println!("You are playing the game...");
         self.first_dealer = self.opponent.determine_first_dealer();
         //self.user_interface.display_first_dealer(self.first_dealer);
 
