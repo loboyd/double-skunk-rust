@@ -8,5 +8,7 @@ pub trait Opponent {
     fn discard(&self, dealer: bool, discared: Vec::<card::Card>) -> Option<Vec<card::Card>>;
 
     fn get_play(&self) -> card::Card;
+
+    fn send_play(&self, card: card::Card);
 }
 

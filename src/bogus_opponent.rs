@@ -4,6 +4,7 @@
  */
 
 //use crate::ui;
+use crate::card;
 use crate::opponent;
 use crate::card::{Card, Rank, Suit};
 
@@ -43,6 +44,9 @@ impl opponent::Opponent for BogusOpponent {
 
     fn get_play(&self) -> Card {
         Card::Value(Rank::Ace, Suit::Hearts)
+    }
+
+    fn send_play(&self, card: card::Card) {
     }
 }
 

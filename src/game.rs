@@ -72,13 +72,16 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
         while played.iter().count() < 8 {
             if to_play {
                 // select card
-                played.push(self.user_interface.get_play_card(&mut hand));
+                let selected = self.user_interface.get_play_card(&mut hand);
+                played.push(selected);
 
                 // update table UI
                 self.user_interface.draw_played_cards(dealer, &played);
                 self.user_interface.draw_self_hand(&hand);
 
                 // send card info to opponent
+                self.opponent.send_play(selected);
+
                 // update score
             } else {
                 // get card data from opponent
