@@ -13,7 +13,7 @@ pub struct BogusOpponent { }
 // (otherwise, find a better way to solve this problem)
 impl opponent::Opponent for BogusOpponent {
     fn determine_first_dealer(&self) -> bool {
-        false
+        true
     }
 
     fn deal(&self, dealer: bool) -> (Vec<Card>, Card) {
@@ -27,18 +27,8 @@ impl opponent::Opponent for BogusOpponent {
         Card::Value(Rank::Seven, Suit::Spades))
     }
 
-    fn discard( &self, dealer: bool, hand: &mut Vec<Card>, ind1: usize, ind2: usize)
-        -> Option<Vec<Card>>
+    fn discard( &self, dealer: bool, discarded: Vec::<Card>) -> Option<Vec<Card>>
     {
-
-        let mut new_hand = Vec::new();
-        // TODO: Write this in a better way
-        for (ind, card) in hand.iter().enumerate() {
-            if ind != ind1 as usize && ind != ind2 as usize {
-                new_hand.push(card);
-            }
-        }
-
         if dealer {
             Some(vec![
                 Card::Value(Rank::Three, Suit::Spades),
@@ -49,6 +39,10 @@ impl opponent::Opponent for BogusOpponent {
         } else {
             None
         }
+    }
+
+    fn get_play(&self) -> Card {
+        Card::Value(Rank::Ace, Suit::Hearts)
     }
 }
 

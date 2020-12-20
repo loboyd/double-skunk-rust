@@ -1,7 +1,9 @@
 use std::fmt;
 
-// TODO: Possibly change cards to enum; include NULL and face-down for UI
-#[derive(Eq, PartialEq, Ord, PartialOrd)]
+pub const HEIGHT: u16 = 6;
+pub const WIDTH:  u16 = 9;
+
+#[derive(Eq, PartialEq, Ord, PartialOrd, Copy, Clone)]
 pub enum Rank {
     Ace,
     Two,
@@ -18,7 +20,7 @@ pub enum Rank {
     King,
 }
 
-#[derive(Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Eq, PartialEq, Ord, PartialOrd, Copy, Clone)]
 pub enum Suit {
     Spades,
     Hearts,
@@ -26,11 +28,33 @@ pub enum Suit {
     Diamonds,
 }
 
-#[derive(Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Eq, PartialEq, Ord, PartialOrd, Copy, Clone)]
 pub enum Card {
     Value(Rank, Suit),
     Facedown,
     Empty,
+}
+
+impl Card {
+    pub fn val(&self) -> u16 {
+        match *self {
+            Card::Facedown => 0,
+            Card::Empty => 0,
+            Card::Value(Rank::Ace,   _) => 1,
+            Card::Value(Rank::Two,   _) => 2,
+            Card::Value(Rank::Three, _) => 3,
+            Card::Value(Rank::Four,  _) => 4,
+            Card::Value(Rank::Five,  _) => 5,
+            Card::Value(Rank::Six,   _) => 6,
+            Card::Value(Rank::Seven, _) => 7,
+            Card::Value(Rank::Eight, _) => 8,
+            Card::Value(Rank::Nine,  _) => 9,
+            Card::Value(Rank::Ten,   _) => 10,
+            Card::Value(Rank::Jack,  _) => 10,
+            Card::Value(Rank::Queen, _) => 10,
+            Card::Value(Rank::King,  _) => 10,
+        }
+    }
 }
 
 impl fmt::Display for Rank {

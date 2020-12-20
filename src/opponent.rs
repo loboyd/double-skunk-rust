@@ -5,7 +5,8 @@ pub trait Opponent {
 
     fn deal(&self, dealer: bool) -> (Vec<card::Card>, card::Card);
 
-    fn discard( &self, dealer: bool, hand: &mut Vec<card::Card>, ind1: usize, ind2: usize)
-        -> Option<Vec<card::Card>>;
+    fn discard(&self, dealer: bool, discared: Vec::<card::Card>) -> Option<Vec<card::Card>>;
+
+    fn get_play(&self) -> card::Card;
 }
 
