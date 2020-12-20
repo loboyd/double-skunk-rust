@@ -115,14 +115,10 @@ impl fmt::Display for Card {
 
         match self {
             Card::Empty => write!(f,
-                "        {x}\
-                         {x}\
-                         {x}\
-                         {x}\
-                         {x}\
-                         {y}",
+                "{w}{x}{w}{x}{w}{x}{w}{x}{w}{x}{w}{y}",
                  x=jump,
-                 y=next_cursor
+                 y=next_cursor,
+                 w="        "
             ),
             _ => write!(f,
                 "┌──────┐{x}\
