@@ -82,13 +82,38 @@ impl Hand for Vec::<card::Card> {
         score
     }
 
-    // TODO
+    // TODO Test this
     fn score_flush(&self) -> u16 {
-        0
+        let n_cards = self.iter().count();
+
+        if n_cards < 4 {
+            return 0
+        } else {
+            let suit = self[0].get_suit();
+            for card in self {
+                if card.get_suit() != suit {
+                    return 0
+                }
+            }
+        }
+
+        n_cards as u16
     }
 
-    // TODO
+    // TODO Test this
     fn score_nobs(&self, starter: card::Card) -> u16 {
+        let turn_up_suit = starter.get_suit();
+
+        for card in self {
+            match card {
+                card::Card::Value(
+                    card::Rank::Jack,
+                    turn_up_suit
+                ) => return 1,
+                _ => continue,
+            }
+        }
+
         0
     }
 }
