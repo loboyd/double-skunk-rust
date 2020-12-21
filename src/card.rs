@@ -20,6 +20,26 @@ pub enum Rank {
     King,
 }
 
+impl Rank {
+    pub fn next(self) -> Option<Self> {
+        match self {
+            Rank::Ace   => Some(Rank::Two),
+            Rank::Two   => Some(Rank::Three),
+            Rank::Three => Some(Rank::Four),
+            Rank::Four  => Some(Rank::Five),
+            Rank::Five  => Some(Rank::Six),
+            Rank::Six   => Some(Rank::Seven),
+            Rank::Seven => Some(Rank::Eight),
+            Rank::Eight => Some(Rank::Nine),
+            Rank::Nine  => Some(Rank::Ten),
+            Rank::Ten   => Some(Rank::Jack),
+            Rank::Jack  => Some(Rank::Queen),
+            Rank::Queen => Some(Rank::King),
+            Rank::King  => None,
+        }
+    }
+}
+
 #[derive(Eq, PartialEq, Ord, PartialOrd, Copy, Clone)]
 pub enum Suit {
     Spades,
@@ -36,8 +56,22 @@ pub enum Card {
 }
 
 impl Card {
-    pub fn val(&self) -> u16 {
-        match *self {
+    pub fn get_rank(self) -> Option<Rank>{
+        match self {
+            Card::Value(rank, _) => Some(rank),
+            _                    => None,
+        }
+    }
+
+    pub fn get_suit(self) -> Option<Suit> {
+        match self {
+            Card::Value(_, suit) => Some(suit),
+            _                    => None,
+        }
+    }
+
+    pub fn val(self) -> u16 {
+        match self {
             Card::Facedown => 0,
             Card::Empty => 0,
             Card::Value(Rank::Ace,   _) => 1,

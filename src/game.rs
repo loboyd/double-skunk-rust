@@ -71,6 +71,7 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
         let mut to_play = !dealer;
         while played.iter().count() < 8 {
             if to_play {
+                // TODO: Handle GO
                 // select card
                 let selected = self.user_interface.get_play_card(&mut hand);
                 played.push(selected);
