@@ -4,7 +4,6 @@ mod opponent;
 
 // structs
 mod client;
-//mod stdin_ui;
 mod termion_ui;
 mod bogus_opponent;
 mod game;

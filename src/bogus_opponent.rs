@@ -15,8 +15,6 @@ pub struct BogusOpponent {
     pub hand: Vec::<card::Card>,
 }
 
-// TODO: Find a way to implement this as a generic over the user interface
-// (otherwise, find a better way to solve this problem)
 impl opponent::Opponent for BogusOpponent {
     fn determine_first_dealer(&self) -> bool {
         true
@@ -32,34 +30,7 @@ impl opponent::Opponent for BogusOpponent {
             sampled_cards[6..12].into_iter().map(|x| Card::from_int(*x)).collect(),
             Card::from_int(sampled_cards[12])
         )
-
-        /*
-        (vec![
-            Card::Value(Rank::Ace, Suit::Spades),
-            Card::Value(Rank::Two, Suit::Spades),
-            Card::Value(Rank::Three, Suit::Spades),
-            Card::Value(Rank::Four, Suit::Spades),
-            Card::Value(Rank::Five, Suit::Spades),
-            Card::Value(Rank::Six, Suit::Spades)],
-        Card::Value(Rank::Seven, Suit::Spades))
-        */
     }
-
-    /*
-    fn discard(&self, dealer: bool, discarded: Vec::<Card>) -> Option<Vec<Card>>
-    {
-        if dealer {
-            Some(vec![
-                Card::Value(Rank::Three, Suit::Spades),
-                Card::Value(Rank::Four, Suit::Spades),
-                Card::Value(Rank::Five, Suit::Spades),
-                Card::Value(Rank::Six, Suit::Spades)
-            ])
-        } else {
-            None
-        }
-    }
-    */
 
     fn get_play(&self) -> Card {
         thread::sleep(time::Duration::from_millis(500));

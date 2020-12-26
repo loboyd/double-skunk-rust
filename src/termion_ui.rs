@@ -219,20 +219,6 @@ impl ui::UserInterface for UI {
         stdout.flush().unwrap();
     }
 
-    /* TODO: Change to this after moving Vec::<card::Card> to Hand
-    fn draw_self_hand(&self, hand: &Vec::<card::Card>) {
-        let mut stdout = std::io::stdout().into_raw_mode().unwrap();
-
-        let mut empty_cards: Vec::<card::Card> = Vec::new();
-        for _ in 0..hand.iter().count() {
-            empty_cards.push(card::Card::Empty);
-        }
-
-        write!(stdout, "{}{}", termion::cursor::Goto(9, 18), empty_cards);
-        write!(stdout, "{}{}", termion::cursor::Goto(9, 18), hand);
-    }
-    */
-
     fn draw_self_hand(&self, hand: &Vec::<card::Card>) {
         let mut stdout = std::io::stdout().into_raw_mode().unwrap();
 
