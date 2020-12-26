@@ -21,6 +21,8 @@ pub trait UserInterface {
     fn select_card(&self, card: &card::Card, col: u16, row: u16);
 
     fn deselect_card(&self, card: &card::Card, col: u16, row: u16);
+
+    fn draw_scores(&self, self_score: u16, opp_score: u16);
 }
 
 pub enum MainMenu {

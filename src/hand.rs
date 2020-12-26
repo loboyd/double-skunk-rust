@@ -16,6 +16,9 @@ pub trait Hand {
     fn score_flush(&self) -> u16;
 
     fn score_nobs(&self, starter: card::Card) -> u16;
+
+    // TODO: Name things better--this take a table, not a hand
+    fn score_play(&self, play: card::Card) -> u16;
 }
 
 impl Hand for Vec::<card::Card> {
@@ -113,6 +116,11 @@ impl Hand for Vec::<card::Card> {
             }
         }
         0
+    }
+
+    // TODO
+    fn score_play(&self, play: card::Card) -> u16 {
+        1
     }
 }
 

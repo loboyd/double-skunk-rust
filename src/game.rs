@@ -65,9 +65,7 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
         }
     }
 
-    fn peg(
-        &mut self, dealer: bool, mut hand: Vec<card::Card>, starter: &card::Card)
-    {
+    fn peg(&mut self, dealer: bool, mut hand: Vec<card::Card>, starter: &card::Card) {
         let mut played: Vec<card::Card> = Vec::new();
 
         self.user_interface.draw_table(dealer, &hand, &starter);
@@ -77,20 +75,22 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
             if to_play {
                 // TODO: Handle GO
                 // select card
-                let selected = self.user_interface.get_play_card(&mut hand);
-                played.push(selected);
+                let play = self.user_interface.get_play_card(&mut hand);
+                played.push(play);
 
                 // update table UI
                 self.user_interface.draw_played_cards(dealer, &played);
                 self.user_interface.draw_self_hand(&hand);
 
                 // send card info to opponent
-                self.opponent.send_play(selected);
+                self.opponent.send_play(play);
 
                 // update score
+                self.self_score += played.score_play(play);
             } else {
                 // get card data from opponent
-                played.push(self.opponent.get_play());
+                let play = self.opponent.get_play();
+                played.push(play);
 
                 // update table UI
                 let n_opp_cards = 8-played.iter().count() - hand.iter().count();
@@ -98,7 +98,10 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
                 self.user_interface.draw_played_cards(dealer, &played);
 
                 // update score
+                self.opp_score += played.score_play(play);
             }
+
+            self.user_interface.draw_scores(self.self_score, self.opp_score);
 
             to_play = !to_play;
         }

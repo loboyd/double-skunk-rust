@@ -347,6 +347,20 @@ impl ui::UserInterface for UI {
 
         stdout.flush().unwrap();
     }
+
+    fn draw_scores(&self, self_score: u16, opp_score: u16) {
+        let mut stdout = std::io::stdout().into_raw_mode().unwrap();
+
+        write!(
+            stdout, "{} you {:3}{}them {:3}",
+            termion::cursor::Goto(71, 22),
+            self_score,
+            termion::cursor::Goto(71, 23),
+            opp_score
+        ).unwrap();
+
+        stdout.flush().unwrap();
+    }
 }
 
 struct Border {}
