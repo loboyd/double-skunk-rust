@@ -3,12 +3,14 @@ use crate::card;
 pub trait Opponent {
     fn determine_first_dealer(&self) -> bool;
 
-    fn deal(&self, dealer: bool) -> (Vec<card::Card>, card::Card);
+    fn deal(&mut self, dealer: bool) -> (Vec<card::Card>, card::Card);
 
-    fn discard(&self, dealer: bool, discared: Vec::<card::Card>) -> Option<Vec<card::Card>>;
+    //fn discard(&self, dealer: bool, discared: Vec::<card::Card>) -> Option<Vec<card::Card>>;
 
     fn get_play(&self) -> card::Card;
 
     fn send_play(&self, card: card::Card);
+
+    fn get_hand(&self) -> Vec::<card::Card>;
 }
 

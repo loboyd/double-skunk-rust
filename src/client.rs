@@ -39,7 +39,7 @@ impl<U: ui::UserInterface + Clone> Client<U> {
     fn play_game(&self) {
         // TODO: Eventually ask what type of opponent to use
 
-        let opponent = bogus_opponent::BogusOpponent{};
+        let opponent = bogus_opponent::BogusOpponent{hand: Vec::new(),};
 
         let mut game = game::Game::new(opponent, &self.user_interface);
 

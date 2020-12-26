@@ -19,7 +19,6 @@ pub trait Hand {
 }
 
 impl Hand for Vec::<card::Card> {
-    // TODO
     fn score(&self, starter: card::Card) -> u16 {
         // count nobs first, then combine starter with hand
         let nobs_score = self.score_nobs(starter);
@@ -113,7 +112,6 @@ impl Hand for Vec::<card::Card> {
                 _ => continue,
             }
         }
-
         0
     }
 }

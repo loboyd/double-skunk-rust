@@ -1,6 +1,7 @@
 use crate::ui;
 use crate::opponent;
 use crate::card;
+use crate::hand::Hand;
 
 pub struct Game<'a, T, U> {
     opponent:       T,
@@ -40,8 +41,8 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
                 &starter
             );
 
-            let crib = self.opponent.discard(dealer, discarded);
             /*
+            let crib = self.opponent.discard(dealer, discarded);
             match crib {
                 Some(crib) => print_crib(crib),
                 None       => println!("gotn't the crib"),
@@ -52,8 +53,11 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
             self.peg(dealer, hand.clone(), &starter);
 
             // TODO: get opponents hand+crib
+            let opp_hand = self.opponent.get_hand();
 
             // TODO: count hands
+            self.self_score += hand.score(starter);
+            self.opp_score  += opp_hand.score(starter);
 
             // TODO: check game termination
 
