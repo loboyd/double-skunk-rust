@@ -20,7 +20,7 @@ impl opponent::Opponent for BogusOpponent {
         true
     }
 
-    fn deal(&mut self, dealer: bool) -> (Vec<Card>, Card) {
+    fn get_deal(&mut self, dealer: bool) -> (Vec<Card>, Card) {
         let mut rng = thread_rng();
         let sampled_cards: Vec<u16> = seq::sample_iter(&mut rng, 0..51, 13).unwrap();
 

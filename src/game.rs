@@ -30,7 +30,7 @@ impl<'a, T: opponent::Opponent, U: ui::UserInterface> Game<'a, T, U> {
         let dealer = if self.first_dealer {true} else {false};
 
         loop {
-            let (mut hand, starter) = self.opponent.deal(dealer);
+            let (mut hand, starter) = self.opponent.get_deal(dealer);
 
             // TODO: Count nibs for dealer
 

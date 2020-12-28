@@ -3,7 +3,7 @@ use crate::card;
 pub trait Opponent {
     fn determine_first_dealer(&self) -> bool;
 
-    fn deal(&mut self, dealer: bool) -> (Vec<card::Card>, card::Card);
+    fn get_deal(&mut self, dealer: bool) -> (Vec<card::Card>, card::Card);
 
     fn get_play(&self) -> card::Card;
 
